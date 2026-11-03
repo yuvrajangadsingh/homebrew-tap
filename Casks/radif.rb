@@ -30,9 +30,11 @@ cask "radif" do
   zap trash: [
     "~/Library/Application Support/com.github.yuvrajangadsingh.ytubic",
     "~/Library/Caches/com.github.yuvrajangadsingh.ytubic",
+    "~/Library/HTTPStorages/com.github.yuvrajangadsingh.ytubic.binarycookies",
     "~/Library/LaunchAgents/YTubic.plist",
     "~/Library/Logs/com.github.yuvrajangadsingh.ytubic",
     "~/Library/Preferences/com.github.yuvrajangadsingh.ytubic.plist",
+    "~/Library/Saved Application State/com.github.yuvrajangadsingh.ytubic.savedState",
     "~/Library/WebKit/com.github.yuvrajangadsingh.ytubic",
   ]
 end
