@@ -1,12 +1,14 @@
 name: bump camber
 
 # camber publishes its releases from CI; this moves Casks/camber.rb to the newest one
-# with the DMG hashes from its SHA256SUMS.txt. Runs hourly, or by hand from the Actions tab.
-# ponytail: hourly poll, so a new camber release reaches brew within the hour; a
-# repository_dispatch from camber would make it instant but needs a token with access here.
+# with the DMG hashes from its SHA256SUMS.txt. Asks every 15 minutes, or run it by hand from
+# the Actions tab. GitHub drops many scheduled runs (the hourly version ran twice in its
+# first 12 hours), so asking often is what keeps the lag short.
+# ponytail: polling; a repository_dispatch from camber would be instant but needs a token
+# with access to this repo stored in camber.
 on:
   schedule:
-    - cron: '17 * * * *'
+    - cron: '7,22,37,52 * * * *'
   workflow_dispatch:
 
 permissions:
