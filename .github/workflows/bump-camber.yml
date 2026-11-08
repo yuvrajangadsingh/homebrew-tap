@@ -1,0 +1,37 @@
+name: bump camber
+
+# camber publishes its releases from CI; this moves Casks/camber.rb to the newest one
+# with the DMG hashes from its SHA256SUMS.txt. Runs hourly, or by hand from the Actions tab.
+# ponytail: hourly poll, so a new camber release reaches brew within the hour; a
+# repository_dispatch from camber would make it instant but needs a token with access here.
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag=$(gh release view -R yuvrajangadsingh/camber --json tagName -q .tagName)
+          v=${tag#v}
+          if grep -q "version \"$v\"" Casks/camber.rb; then echo "already $v"; exit 0; fi
+          sums=$(curl -fsSL "https://github.com/yuvrajangadsingh/camber/releases/download/$tag/SHA256SUMS.txt")
+          arm=$(awk -v f="camber-$v-arm64.dmg" '$2 == f { print $1 }' <<< "$sums")
+          intel=$(awk -v f="camber-$v-x64.dmg" '$2 == f { print $1 }' <<< "$sums")
+          [[ $arm =~ ^[0-9a-f]{64}$ && $intel =~ ^[0-9a-f]{64}$ ]] || { echo "::error::no DMG hashes for $tag"; exit 1; }
+          sed -i -E -e "s/^  version \"[^\"]+\"/  version \"$v\"/" \
+            -e "s/(arm: +\")[0-9a-f]{64}/\1$arm/" -e "s/(intel: +\")[0-9a-f]{64}/\1$intel/" Casks/camber.rb
+          grep -q "version \"$v\"" Casks/camber.rb && grep -q "$arm" Casks/camber.rb && grep -q "$intel" Casks/camber.rb
+          git diff
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+            commit -qam "camber $v"
+          git push
