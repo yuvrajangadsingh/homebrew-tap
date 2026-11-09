@@ -1,17 +1,19 @@
 class Greens < Formula
   desc "Mirror private work contributions to your GitHub profile"
   homepage "https://github.com/yuvrajangadsingh/greens"
-  url "https://github.com/yuvrajangadsingh/greens/archive/refs/tags/v1.8.2.tar.gz"
-  sha256 "ea3322cc3a1b3e0814d83e7761c71d2c18cae5542a38f42b936a6d970c532817"
+  url "https://github.com/yuvrajangadsingh/greens/archive/refs/tags/v1.9.0.tar.gz"
+  sha256 "ee5bbf31f6df1206dcd5f5471e764d36792225985ac27c9f34819a824e782626"
   license "MIT"
 
   depends_on "git"
 
+  depends_on "jq"
+
+  depends_on "gh"
+
   def install
-    bin.install "sync.sh" => "greens"
-    libexec.install "setup.sh"
-    # Patch setup path in sync.sh to point to libexec
-    inreplace bin/"greens", "$SCRIPT_DIR/setup.sh", "#{libexec}/setup.sh"
+    libexec.install "sync.sh", "setup.sh", "lib"
+    (bin/"greens").write_env_script libexec/"sync.sh", {}
   end
 
   def caveats
