@@ -1,9 +1,9 @@
 cask "camber" do
   arch arm: "arm64", intel: "x64"
 
-  version "0.6.0"
-  sha256 arm:   "55c282ce50c8d2773981d394d9bd18a094e446dbc681a616ad789bd621e23445",
-         intel: "f1dcf5f896dcc188162aa72db75ffb54e34dba3bfa93554f124fefee2d07e77b"
+  version "0.6.1"
+  sha256 arm:   "ab58b454229f9935efd2b01bb87feb02d43e0c949deb4feb87599268ca84c5bf",
+         intel: "926c415347429431e14927f824438559db66c5a898df05030a76defdddda503c"
 
   url "https://github.com/yuvrajangadsingh/camber/releases/download/v#{version}/camber-#{version}-#{arch}.dmg"
   name "camber"
