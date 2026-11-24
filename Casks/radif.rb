@@ -1,6 +1,6 @@
 cask "radif" do
-  version "1.0.1"
-  sha256 "ff6e9600e6496ee40b301b7ed987bdd0162dafd5e1eba6acaa7c7140b7eb32aa"
+  version "1.0.2"
+  sha256 "7208a262ee5408ad331c85d9a89972985e138609e2220ff889b858e9f89f44a3"
 
   url "https://github.com/yuvrajangadsingh/radif/releases/download/mac-v#{version}/Radif_#{version}_universal.dmg"
   name "Radif"
